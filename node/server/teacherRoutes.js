@@ -12,7 +12,6 @@ module.exports = (app) => {
   });
 
   app.route("/teachers").post((req, res) => {
-    console.log("I am here");
     const teacher = req.body;
     teacherList.addTeacher(teacher);
     res.sendStatus(201);
@@ -23,7 +22,11 @@ module.exports = (app) => {
     const teacherId = req.params.teacherId;
     const teacherToUpdate = teacherList.getTeacherById(teacherId);
     const studentToAdd = studentList.getStudentById(putBody.studentId);
-    teacherToUpdate.addStudent(studentToAdd);
+    if (!teacherToUpdate.students.find((s) => s.id === studentToAdd.id)) {
+      teacherToUpdate.students.push(studentToAdd);
+    }
+    console.log({ teacherToUpdate });
+    teacherList.updateTeacher(teacherToUpdate);
     res.json(teacherToUpdate);
   });
 };

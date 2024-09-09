@@ -19,16 +19,23 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useStudents } from "@/providers/api/students";
-import { useTeachers } from "@/providers/api/teachers";
+import {
+  useAssignStudentToTeacher,
+  useTeachers,
+} from "@/providers/api/teachers";
 import { useState } from "react";
 
 export default function Page() {
+  const { mutate: assignStudentToTeacher } = useAssignStudentToTeacher();
   const [studentEditingId, setUserEditingId] = useState<string | null>(null);
-  const [updatedStudentName, setUpdatedStudentName] = useState<string>("");
 
   const handleAssignStudent = () => {
     if (teacherEditingId && newAssignedStudentId) {
       console.log({ studentEditingId, newAssignedStudentId, teacherEditingId });
+      assignStudentToTeacher({
+        teacherId: teacherEditingId,
+        studentId: newAssignedStudentId,
+      });
     }
 
     setTeacherEditingId(null);
@@ -76,7 +83,15 @@ export default function Page() {
                         <SelectGroup>
                           <SelectLabel>Students</SelectLabel>
                           {students.map((student) => (
-                            <SelectItem key={student.id} value={student.id}>
+                            <SelectItem
+                              key={student.id}
+                              value={student.id}
+                              disabled={
+                                !!teacher.students.find(
+                                  (s) => s.id === student.id
+                                )
+                              }
+                            >
                               {student.name}
                             </SelectItem>
                           ))}
@@ -87,9 +102,12 @@ export default function Page() {
                     <Button onClick={handleAssignStudent}>Assign</Button>
                   </>
                 ) : (
-                  <button onClick={() => setTeacherEditingId(teacher.id)}>
+                  <Button
+                    variant="outline"
+                    onClick={() => setTeacherEditingId(teacher.id)}
+                  >
                     Assign student
-                  </button>
+                  </Button>
                 )}
               </TableCell>
             </TableRow>

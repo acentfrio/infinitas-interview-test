@@ -51,3 +51,29 @@ export const usePostTeacher = () => {
     },
   });
 };
+
+type AssignStudentToTeacherInput = {
+  teacherId: string;
+  studentId: string;
+};
+export const useAssignStudentToTeacher = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["assign-student-to-teacher"],
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["teachers"] }),
+    mutationFn: async (data: AssignStudentToTeacherInput) => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/teachers/${data.teacherId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      const res = await response.json();
+      return res;
+    },
+  });
+};

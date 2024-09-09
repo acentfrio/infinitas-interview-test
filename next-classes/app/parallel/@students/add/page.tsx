@@ -9,7 +9,7 @@ export default function Page() {
     event.preventDefault();
 
     const target = event.currentTarget;
-    const name = target.teacher.value;
+    const name = target.student.value;
     const id = crypto.randomUUID();
     mutate({
       name,

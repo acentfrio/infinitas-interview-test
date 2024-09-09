@@ -2,7 +2,7 @@ const cors = require("cors");
 const express = require("express");
 const teacherRoutes = require("./teacherRoutes");
 const studentRoutes = require("./studentRoutes");
-
+const assignmentRoutes = require("./assignmentRoutes");
 const app = express();
 var corsOptions = {
   origin: "http://localhost:3000",
@@ -15,5 +15,6 @@ app.use(bodyParser.json());
 
 teacherRoutes(app);
 studentRoutes(app);
+assignmentRoutes(app);
 
 module.exports = app;

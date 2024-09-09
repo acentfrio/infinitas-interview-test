@@ -1,13 +1,12 @@
 module.exports = (name, id) => {
-
   const students = [];
 
-  return ({
+  return {
     name,
     id,
     students,
     addStudent: (student) => {
       students.push(student);
-    }
-  });
+    },
+  };
 };
