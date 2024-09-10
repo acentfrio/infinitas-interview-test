@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import { useStudents } from "@/providers/api/students";
 
-function List() {
+export default function List() {
   const { data } = useStudents();
   return (
     <div>
@@ -30,13 +30,5 @@ function List() {
         </TableBody>
       </Table>
     </div>
-  );
-}
-
-export default function Page() {
-  return (
-    // <Suspense fallback={<div>Loading...</div>}>
-    <List />
-    // </Suspense>
   );
 }
